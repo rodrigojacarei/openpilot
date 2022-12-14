@@ -7,7 +7,6 @@ LaneChangeDirection = log.LateralPlan.LaneChangeDirection
 
 LANE_CHANGE_SPEED_MIN = 20 * CV.MPH_TO_MS
 LANE_CHANGE_TIME_MAX = 10.
-LANE_CHANGE_PULSE_TIMER = 2.
 
 DESIRES = {
   LaneChangeDirection.none: {
@@ -68,7 +67,7 @@ class DesireHelper:
 
         if not one_blinker or below_lane_change_speed:
           self.lane_change_state = LaneChangeState.off
-        elif self.lane_change_pulse_timer > LANE_CHANGE_PULSE_TIMER and not blindspot_detected:
+        elif self.lane_change_pulse_timer > 2. and not blindspot_detected:
           self.lane_change_state = LaneChangeState.laneChangeStarting
 
       # LaneChangeState.laneChangeStarting
