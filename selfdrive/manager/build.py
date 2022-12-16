@@ -26,7 +26,7 @@ def build(spinner: Spinner, dirty: bool = False) -> None:
   nproc = os.cpu_count()
   j_flag = "" if nproc is None else f"-j{nproc - 1}"
 
-  scons: subprocess.Popen = subprocess.Popen(["scons", j_flag, "--cache-populate", "selfdrive/ui", "--extras"], cwd=BASEDIR, env=env, stderr=subprocess.PIPE)
+  scons: subprocess.Popen = subprocess.Popen(["scons", j_flag, "--cache-populate"], cwd=BASEDIR, env=env, stderr=subprocess.PIPE)
   assert scons.stderr is not None
 
   compile_output = []

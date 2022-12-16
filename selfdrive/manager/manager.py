@@ -4,7 +4,6 @@ import os
 import signal
 import subprocess
 import sys
-import time
 import traceback
 from typing import List, Tuple, Union
 
@@ -12,7 +11,6 @@ import cereal.messaging as messaging
 import selfdrive.sentry as sentry
 from common.basedir import BASEDIR
 from common.params import Params, ParamKeyType
-from common.spinner import Spinner
 from common.text_window import TextWindow
 from selfdrive.boardd.set_time import set_time
 from system.hardware import HARDWARE, PC
@@ -22,7 +20,7 @@ from selfdrive.manager.process_config import managed_processes
 from selfdrive.athena.registration import register, UNREGISTERED_DONGLE_ID
 from system.swaglog import cloudlog, add_file_handler
 from system.version import is_dirty, get_commit, get_version, get_origin, get_short_branch, \
-                              terms_version, training_version, is_tested_branch, run_cmd
+                              terms_version, training_version, is_tested_branch
 
 
 sys.path.append(os.path.join(BASEDIR, "pyextra"))
@@ -39,10 +37,10 @@ def manager_init() -> None:
   params.clear_all(ParamKeyType.CLEAR_ON_MANAGER_START)
 
   default_params: List[Tuple[str, Union[str, bytes]]] = [
-    ("CompletedTrainingVersion", training_version),
+    ("CompletedTrainingVersion", "0"),
     ("DisengageOnAccelerator", "1"),
     ("GsmMetered", "1"),
-    ("HasAcceptedTerms", terms_version),
+    ("HasAcceptedTerms", "0"),
     ("LanguageSetting", "main_en"),
     ("OpenpilotEnabledToggle", "1"),
   ]
@@ -54,7 +52,7 @@ def manager_init() -> None:
 
   # set unset params
   for k, v in default_params:
-    if params.get(k) is None or True:
+    if params.get(k) is None:
       params.put(k, v)
 
   # is this dashcam?
@@ -168,30 +166,11 @@ def main() -> None:
 
   manager_init()
 
-  # launch ui and let user set up ssh
+  # Start UI early so prepare can happen in the background
   if not prepare_only:
     managed_processes['ui'].start()
 
-  # manager_prepare()
-
-  while managed_processes['ui'].proc.is_alive():
-    time.sleep(1)
-
-  # install deps
-  spinner = Spinner()
-  spinner.update('Installing dependencies')
-  run_cmd('sudo apt-get update'.split())
-  run_cmd('sudo apt-get install -y --no-install-recommends gstreamer1.0-tools gstreamer1.0-libav gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad'.split())
-
-  spinner.update('Downloading videos')
-  run_cmd(os.path.join(BASEDIR, 'selfdrive/assets/videos/download-videos.sh').split())
-  spinner.close()
-
-  managed_processes['notouch'].start()
-  managed_processes['manage_athenad'].start()
-
-  while True:
-    time.sleep(1)
+  manager_prepare()
 
   if prepare_only:
     return
