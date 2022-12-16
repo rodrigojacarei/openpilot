@@ -12,8 +12,8 @@ spinner_pid=$!
 scons selfdrive/ui/_notouch selfdrive/ui/_ui -j8 --extras || true
 kill -9 $spinner_pid
 
-# launch ui and let user set up ssh
-./selfdrive/ui/ui || true
+## launch ui and let user set up ssh
+#./selfdrive/ui/ui || true
 
 echo "Installing dependencies" | ./selfdrive/ui/spinner &
 spinner_pid=$!
