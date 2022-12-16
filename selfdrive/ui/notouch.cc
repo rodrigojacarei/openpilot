@@ -11,8 +11,7 @@
 #include "selfdrive/ui/notouch.h"
 #include "selfdrive/ui/qt/qt_window.h"
 
-// TODO: remove sync=false
-const QString GST_VIDEO_CMD = QString("while true; do gst-launch-1.0 -v filesrc location=\"%1\" ! decodebin ! videoconvert ! queue2 ! videoflip method=clockwise ! queue2 ! autovideosink sync=false; done");
+const QString GST_VIDEO_CMD = QString("while true; do gst-launch-1.0 -v filesrc location=\"%1\" ! decodebin ! videorate ! queue2 ! video/x-raw,framerate=20/1 ! queue2 ! videoconvert ! queue2 ! videoflip method=clockwise ! queue2 ! autovideosink; done");
 
 
 MainWindowNoTouch::MainWindowNoTouch(QWidget *parent) : QWidget(parent) {
