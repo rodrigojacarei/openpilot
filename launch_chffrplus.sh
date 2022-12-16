@@ -10,9 +10,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 function agnos_init {
   # wait longer for weston to come up
-  if [ -f "$BASEDIR/prebuilt" ]; then
-    sleep 3
-  fi
+  sleep 3
 
   # TODO: move this to agnos
   sudo rm -f /data/etc/NetworkManager/system-connections/*.nmmeta

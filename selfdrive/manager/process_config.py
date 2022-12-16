@@ -37,6 +37,7 @@ procs = [
   NativeProcess("sensord", "selfdrive/sensord", ["./sensord"], enabled=not PC),
   NativeProcess("ubloxd", "selfdrive/locationd", ["./ubloxd"], enabled=(not PC or WEBCAM)),
   NativeProcess("ui", "selfdrive/ui", ["./ui"], offroad=True, watchdog_max_dt=(5 if not PC else None)),
+  NativeProcess("notouch", "selfdrive/ui", ["./notouch"], offroad=True, watchdog_max_dt=(5 if not PC else None)),
   NativeProcess("soundd", "selfdrive/ui/soundd", ["./soundd"], offroad=True),
   NativeProcess("locationd", "selfdrive/locationd", ["./locationd"]),
   NativeProcess("boardd", "selfdrive/boardd", ["./boardd"], enabled=False),
