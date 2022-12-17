@@ -11,6 +11,7 @@
 #include "selfdrive/ui/notouch.h"
 #include "selfdrive/ui/qt/qt_window.h"
 
+const QString VIDEOS_PATH = "../assets/videos/out";
 const QString GST_VIDEO_CMD = QString("while true; do gst-launch-1.0 -v filesrc location=\"%1\" ! decodebin ! videorate ! queue2 ! video/x-raw,framerate=20/1 ! queue2 ! videoconvert ! queue2 ! videoflip method=clockwise ! queue2 ! autovideosink; done");
 
 
@@ -20,13 +21,14 @@ MainWindowNoTouch::MainWindowNoTouch(QWidget *parent) : QWidget(parent) {
   main_layout = new QVBoxLayout(this);
   main_layout->setMargin(0);
 
+  QDir videos_path = QDir(VIDEOS_PATH, "*.mp4");
   QString content_name;
-  while ((content_name = MultiOptionDialog::getSelection(tr("Select content"), content.keys(), "", this)).isEmpty()) {
+  while ((content_name = MultiOptionDialog::getSelection(tr("Select content"), videos_path.entryList(), "", this)).isEmpty()) {
     qDebug() << "No content selected!";
   }
+  content_name = VIDEOS_PATH + "/" + content_name;
 
   bool is_media = !content_name.contains("Route");
-  content_name = content[content_name];  // get actual route/file name
   qDebug() << "Selected:" << content_name;
 
   if (is_media) {
