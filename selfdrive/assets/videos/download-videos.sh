@@ -9,8 +9,9 @@ echo "downloading videos"
 mkdir -p out/
 
 while read -r line; do
-  echo "$AZ_BASEDIR/$line"
-  wget "$AZ_BASEDIR/$line" -O "./$line"
-done < <(curl -s "$MANIFEST")
+  if [ -n "$line" ]; then
+    wget "$AZ_BASEDIR/$line" -O "./$line"
+  fi
+done < <(curl -w '\n' -s "$MANIFEST")
 
 echo "Success!"
