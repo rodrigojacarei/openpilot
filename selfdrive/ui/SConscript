@@ -1,6 +1,6 @@
 import os
 Import('qt_env', 'arch', 'common', 'messaging', 'visionipc',
-       'cereal', 'transformations', 'replay_lib')
+       'cereal', 'transformations')
 
 base_libs = [common, messaging, cereal, visionipc, transformations, 'zmq',
              'capnp', 'kj', 'm', 'OpenCL', 'ssl', 'crypto', 'pthread'] + qt_env["LIBS"]
@@ -66,8 +66,7 @@ if GetOption('test'):
 
 
 # build notouch
-replay_libs = [replay_lib, 'avutil', 'avcodec', 'avformat', 'bz2', 'curl', 'yuv', 'ncurses']
-qt_env.Program("_notouch", ["notouch.cc"] + [asset_obj] + ["qt/onroad.cc"], LIBS=replay_libs + qt_libs)
+qt_env.Program("_notouch", ["notouch.cc"] + [asset_obj] + ["qt/onroad.cc"], LIBS=qt_libs)
 
 
 # build translation files

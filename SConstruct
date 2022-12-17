@@ -282,7 +282,7 @@ Export('envCython')
 
 # Qt build environment
 qt_env = env.Clone()
-qt_modules = ["Widgets", "Gui", "Core", "Network", "Concurrent", "Multimedia", "MultimediaWidgets", "Quick", "Qml", "QuickWidgets", "Location", "Positioning", "DBus"]
+qt_modules = ["Widgets", "Gui", "Core", "Network", "Concurrent", "Multimedia", "Quick", "Qml", "QuickWidgets", "Location", "Positioning", "DBus"]
 
 qt_libs = []
 if arch == "Darwin":
@@ -430,17 +430,14 @@ SConscript(['selfdrive/boardd/SConscript'])
 
 SConscript(['selfdrive/loggerd/SConscript'])
 
-# TODO: fix this ordering. rn replay_lib needs to come before ui, and cabana needs to come after ui
-if arch in ['x86_64', 'Darwin'] or GetOption('extras') or True:
-  replay_lib = SConscript(['tools/replay/SConscript'])
-  Export('replay_lib')
-
 SConscript(['selfdrive/locationd/SConscript'])
 SConscript(['selfdrive/sensord/SConscript'])
 SConscript(['selfdrive/ui/SConscript'])
 SConscript(['selfdrive/navd/SConscript'])
 
 if arch in ['x86_64', 'Darwin'] or GetOption('extras'):
+  SConscript(['tools/replay/SConscript'])
+
   opendbc = abspath([File('opendbc/can/libdbc.so')])
   Export('opendbc')
   SConscript(['tools/cabana/SConscript'])
