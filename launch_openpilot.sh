@@ -7,7 +7,7 @@ echo "Building" | ./selfdrive/ui/spinner &
 spinner_pid=$!
 
 # build
-scons selfdrive/ui/_notouch selfdrive/ui/_ui -j8 --extras
+scons selfdrive/ui/_notouch selfdrive/ui/_ui -j8
 kill -9 $spinner_pid
 
 # launch ui and let user set up ssh
