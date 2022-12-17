@@ -18,11 +18,4 @@ private:
 
   OnroadWindow *onroad;
   std::unique_ptr<Replay> replay;
-
-//  QMap<QString, QString> content = {
-////    {"TB - Media", "../../../tacos.mp4"},
-//    {"three B-roll", "three-rotating.mp4"},
-//    {"website home B-roll", "website-home-video.mp4"},
-////    {"Route1 - Route", "d545129f3ca90f28|2022-12-13--22-57-16"},
-//  };
 };
