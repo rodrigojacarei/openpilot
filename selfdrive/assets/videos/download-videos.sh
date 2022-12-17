@@ -2,14 +2,15 @@
 set -e
 cd "$(dirname "$0")"
 
-AZ_BASEDIR="https://commadataci.blob.core.windows.net/cesdemo/out"
-declare -a videos=("three-rotating.mp4" "website-home-video.mp4")
+AZ_BASEDIR="https://commadataci.blob.core.windows.net/cesdemo"
+MANIFEST="$AZ_BASEDIR/manifest.txt"
 
 echo "downloading videos"
 mkdir -p out/
 
-for f in "${videos[@]}"; do
-  wget "$AZ_BASEDIR/$f" -O "out/$f"
-done;
+while read -r line; do
+  echo "$AZ_BASEDIR/$line"
+  wget "$AZ_BASEDIR/$line" -O "./$line"
+done < <(curl -s "$MANIFEST")
 
 echo "Success!"
