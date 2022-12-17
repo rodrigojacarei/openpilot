@@ -17,6 +17,7 @@ const QString GST_VIDEO_CMD = QString("while true; do gst-launch-1.0 -v filesrc 
 
 MainWindowNoTouch::MainWindowNoTouch(QWidget *parent) : QWidget(parent) {
   setpriority(PRIO_PROCESS, 0, -5);
+  Hardware::set_brightness(80);
 
   main_layout = new QVBoxLayout(this);
   main_layout->setMargin(0);
