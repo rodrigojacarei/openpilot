@@ -26,25 +26,14 @@ MainWindowNoTouch::MainWindowNoTouch(QWidget *parent) : QWidget(parent) {
   while ((content_name = MultiOptionDialog::getSelection(tr("Select content"), videos_path.entryList(), "", this)).isEmpty()) {
     qDebug() << "No content selected!";
   }
-  content_name = VIDEOS_PATH + "/" + content_name;
 
-  bool is_media = !content_name.contains("Route");
+  content_name = VIDEOS_PATH + "/" + content_name;
   qDebug() << "Selected:" << content_name;
 
-  if (is_media) {
+  // play video
+  QTimer::singleShot(0, [=]() {
     std::system(QString("while true; do %1; done").arg(GST_VIDEO_CMD.arg(content_name)).toStdString().c_str());
-  } else {
-    onroad = new OnroadWindow(this);
-    main_layout->addWidget(onroad);
-
-    QString data_dir = QString::fromStdString(Path::log_root());
-    replay.reset(new Replay(content_name, {}, {}, uiState()->sm.get(), REPLAY_FLAG_ECAM));  // , data_dir));
-
-    if (replay->load()) {
-      qDebug() << "Starting replay!";
-      replay->start();
-    }
-  }
+  });
 
   // no outline to prevent the focus rectangle
   setStyleSheet(R"(
