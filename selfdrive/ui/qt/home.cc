@@ -166,8 +166,11 @@ OffroadHome::OffroadHome(QWidget* parent) : QFrame(parent) {
   timer = new QTimer(this);
   timer->callOnTimeout(this, &OffroadHome::refresh);
 
-  ConfirmationDialog dialog("Visit Advanced Network settings, enable SSH, and add an SSH key.", tr("Continue"), tr(""), true, this);
-  dialog.exec();
+  QTimer::singleShot(0, [=]() {
+    if (!ConfirmationDialog::confirm("Visit Advanced Network settings, enable SSH, and add an SSH key.", tr("Continue"), this)) {
+      qApp->exit(554);
+    }
+  });
 
   setStyleSheet(R"(
     * {
