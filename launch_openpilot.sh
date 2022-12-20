@@ -13,10 +13,14 @@ kill -9 $spinner_pid
 # launch ui and let user set up ssh
 ./selfdrive/ui/ui
 
+echo "Fetching updates" | ./selfdrive/ui/spinner &
+spinner_pid=$!
+
 # update
 git fetch
 git reset --hard "@{u}"
 git submodule update --init --recursive
+kill -9 $spinner_pid
 
 echo "Installing dependencies" | ./selfdrive/ui/spinner &
 spinner_pid=$!
