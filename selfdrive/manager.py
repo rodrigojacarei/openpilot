@@ -408,14 +408,15 @@ def send_managed_process_signal(name, sig):
 # ****************** run loop ******************
 
 def manager_init(should_register=True):
-  if should_register:
-    reg_res = register()
-    if reg_res:
-      dongle_id = reg_res
-    else:
-      raise Exception("server registration failed")
-  else:
-    dongle_id = "c"*16
+#  if should_register:
+#    reg_res = register()
+#    if reg_res:
+#      dongle_id = reg_res
+#    else:
+#      raise Exception("server registration failed")
+#  else:
+#    dongle_id = "c"*16
+  dongle_id = "c"*16
 
   # set dongle id
   cloudlog.info("dongle id is " + dongle_id)
